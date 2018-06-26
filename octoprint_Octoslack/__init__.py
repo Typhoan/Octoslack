@@ -966,40 +966,7 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 			self._logger.debug("Slack RTM - help command")
  			self.handle_event("Help", channel, {}, True, None)
 			reaction = positive_reaction
-			
-		elif command == "stop":
-			self._logger.debug("Slack RTM - stop command")
-			if self._printer.is_printing():
-				##Send processing reaction
-				sent_processing_reaction = True
-				self.add_message_reaction(slackAPIToken, channel, timestamp, processing_reaction, False)
 
-				self._printer.cancel_print()
-				reaction = positive_reaction
-			else:
-				reaction = negative_reaction
-		elif command == "pause":
-			self._logger.debug("Slack RTM - pause command")
-			if self._printer.is_printing():
-				##Send processing reaction
-				sent_processing_reaction = True
-
-				self.add_message_reaction(slackAPIToken, channel, timestamp, processing_reaction, False)
-				self._printer.toggle_pause_print()
-				reaction = positive_reaction
-			else:
-				reaction = negative_reaction
-		elif command == "resume":
-			self._logger.debug("Slack RTM - resume command")
-			if self._printer.is_paused():
-				##Send processing reaction
-				sent_processing_reaction = True
-				self.add_message_reaction(slackAPIToken, channel, timestamp, processing_reaction, False)
-
-				self._printer.toggle_pause_print()
-				reaction = positive_reaction
-			else:
-				reaction = negative_reaction
 		elif command == "status":
 			##Send processing reaction
 			self._logger.debug("Slack RTM - status command")
