@@ -1243,7 +1243,7 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 		slack_username = ''
 		
 		slack_identity_config2 = self._settings.get(['slack_identity2'], merged=True)
-		slack_as_user2 = slack_identity_config['existing_user2']
+		slack_as_user2 = slack_identity_config['existing_user']
 		slack_icon_url2 = ''
 		slack_icon_emoji2 = ''
 		slack_username2 = ''
