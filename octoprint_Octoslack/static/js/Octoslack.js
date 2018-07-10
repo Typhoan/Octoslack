@@ -90,10 +90,12 @@ var Octoslack = {
 		$('#octoslack_connection_type_webhook').attr('disabled', 'disabled');
 		
 		$('#octoslack_custom_identity_icon_emoji').attr('disabled', 'disabled');
+        $('#octoslack_custom_identity_icon_emoji2').attr('disabled', 'disabled');
 	} else {
 		$('#octoslack_connection_type_apitoken').removeAttr('disabled');
 		$('#octoslack_connection_type_webhook').removeAttr('disabled');
 		$('#octoslack_custom_identity_icon_emoji').removeAttr('disabled');
+        $('#octoslack_custom_identity_icon_emoji2').attr('disabled', 'disabled');
 
 	}
     },
