@@ -134,6 +134,15 @@
 		<small class="muted">A WebHook URL can be generated via your Slack team's settings dialog. Apps &amp; integrations --&gt; Manage --&gt; Custom Integrations --&gt; Incoming WebHooks</small>
             </div>
         </div>
+		<div id="octolack_second_webhook_group" class="octoprint_config_row">
+            <br/>
+            <div class="octoprint_config_row">
+                <span class="octoslack_label">WebHook URL</span>
+                <input type="text" class="octoslack_width_auto" size="60" data-bind="value: settings.plugins.Octoslack.slack_webhook_config2.webhook_url">
+		</br>
+		<small class="muted">A WebHook URL can be generated via your Slack team's settings dialog. Apps &amp; integrations --&gt; Manage --&gt; Custom Integrations --&gt; Incoming WebHooks</small>
+            </div>
+        </div>
         <h3>Slack channel(s)</h3>
         <div class="octoprint_config_row">
             <div class="octoslack_label">Channel(s)</div>
@@ -167,6 +176,32 @@
             <div class="octoprint_config_row">
                 <span class="octoslack_label">Icon URL</span>
                 <input type="text" class="octoslack_width_auto" size="60" data-bind="value: settings.plugins.Octoslack.slack_identity.icon_url">
+                <br/>
+            </div>
+        </div>
+		
+		<h3>Second Slack identity</h3>
+        <div class="octoprint_config_row">
+            <input type="checkbox" id="octoslack_slack_identity_check2" onClick="Octoslack.toggleUseSlackIdentity2(this);" class="octoslack_valign" data-bind="checked: settings.plugins.Octoslack.slack_identity2.existing_user">
+            <div class="octoslack_label octoslack_action_label" onclick="$('#octoslack_slack_identity_check2').trigger('click')">Use Slack identity</div>
+	    <br/>
+	    <small class="muted">When checked, Octoslack will Use the name/icon defined for the Bot/WebHook. When unchecked, a custom name and icon can be specified</small>
+        </div>
+        <div id="octoslack_custom_identity_group" class="octoslack_hidden">
+            <br/>
+            <div class="octoprint_config_row">
+                <span class="octoslack_label">Username</span>
+                <input type="text" class="octoslack_width_auto" size="25" data-bind="value: settings.plugins.Octoslack.slack_identity2.username">
+                <br/>
+            </div>
+            <div class="octoprint_config_row">
+                <span class="octoslack_label">Icon emoji</span>
+                <input type="text" class="octoslack_width_auto" id="octoslack_custom_identity_icon_emoji" size="15" data-bind="value: settings.plugins.Octoslack.slack_identity2.icon_emoji">
+                <br/>
+            </div>
+            <div class="octoprint_config_row">
+                <span class="octoslack_label">Icon URL</span>
+                <input type="text" class="octoslack_width_auto" size="60" data-bind="value: settings.plugins.Octoslack.slack_identity2.icon_url">
                 <br/>
             </div>
         </div>

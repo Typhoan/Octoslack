@@ -65,7 +65,16 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 			"slack_webhook_config" : {
 				"webhook_url" : "",
 			},
+			"slack_webhook_config2" : {
+				"webhook_url": "",
+			},
 			"slack_identity" : {
+				"existing_user" : True,
+				"icon_url" : "",
+				"icon_emoji" : "",
+				"username" : "",
+			},
+			"slack_identity2" : {
 				"existing_user" : True,
 				"icon_url" : "",
 				"icon_emoji" : "",
@@ -373,6 +382,7 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 		return dict(admin=[
 			["slack_apitoken_config", "api_token"],
 			["slack_webhook_config", "webhook_url"],
+			["slack_webhook_config2", "webhook_url2"],
 			["s3_config", "AWSAccessKey"],
 			["s3_config", "AWSsecretKey"],
 			["s3_config", "s3Bucket"],
@@ -1103,8 +1113,12 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 			slackWebHookUrl = self._settings.get(['slack_webhook_config'], merged=True).get('webhook_url')
 			if not slackWebHookUrl == None:
 				slackWebHookUrl = slackWebHookUrl.strip()
-
-		if (slackAPIToken == None or len(slackAPIToken) == 0) and (slackWebHookUrl == None or len(slackWebHookUrl) == 0):
+		
+		slackWebHookUrl2 = self._settings.get(['slack_webhook_config2'], merged=True).get('webhook_url')
+		if not slackWebHookUrl2 == None:
+			slackWebHookUrl2 = slackWebHookUrl2.strip()
+		
+		if (slackAPIToken == None or len(slackAPIToken) == 0) and (slackWebHookUrl == None or len(slackWebHookUrl) == 0) and (slackWebHookUrl2 == None or len(slackWebHookUrl2) == 0):
 			self._logger.error("Slack connection not available, skipping message send")
 			return
 
@@ -1194,6 +1208,12 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 		slack_icon_url = ''
 		slack_icon_emoji = ''
 		slack_username = ''
+		
+		slack_identity_config2 = self._settings.get(['slack_identity2'], merged=True)
+		slack_as_user2 = slack_identity_config['existing_user']
+		slack_icon_url2 = ''
+		slack_icon_emoji2 = ''
+		slack_username2 = ''
 
 		if not slack_as_user:
 			if 'icon_url' in slack_identity_config:
@@ -1202,6 +1222,14 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 				slack_icon_emoji = slack_identity_config['icon_emoji']
 			if 'username' in slack_identity_config:
 				slack_username = slack_identity_config['username']
+				
+		if not slack_as_user2:
+			if 'icon_url' in slack_identity_config2:
+				slack_icon_url2 = slack_identity_config2['icon_url']
+			if not self.mattermost_mode() and 'icon_emoji' in slack_identity_config2:
+				slack_icon_emoji2 = slack_identity_config2['icon_emoji']
+			if 'username' in slack_identity_config2:
+				slack_username2 = slack_identity_config2['username']
 
 		allow_empty_channel = connection_method == "WEBHOOK"
 
@@ -1246,6 +1274,32 @@ class OctoslackPlugin(octoprint.plugin.SettingsPlugin,
 	
 				try:
 					webHook = IncomingWebhook(slackWebHookUrl)
+					webHookRsp = webHook.post(slack_msg)
+					self._logger.debug("Slack WebHook postMessage response: " + webHookRsp.text)
+
+					if not webHookRsp.ok:
+						self._logger.error("Slack WebHook message send failed: " + webHookRsp.text)
+				except Exception as e:
+					self._logger.exception("Slack WebHook message send error: " + str(e))
+					
+			if not slackWebHookUrl2 == None and len(slackWebHookUrl2) > 0:
+				slack_msg = {}
+				slack_msg['channel'] = ''
+	
+				if not slack_as_user2 == None:
+					slack_msg['as_user'] = slack_as_user2
+				if not slack_icon_url2 == None and len(slack_icon_url2) > 0:
+					slack_msg['icon_url'] = slack_icon_url2
+				if not slack_icon_emoji2 == None and len(slack_icon_emoji2) > 0:
+					slack_msg['icon_emoji'] = slack_icon_emoji2
+				if not slack_username2 == None and len(slack_username2) > 0:
+					slack_msg['username'] = slack_username2
+
+				slack_msg['attachments'] = attachments
+				self._logger.debug("Slack WebHook postMessage json: " + json.dumps(slack_msg))
+	
+				try:
+					webHook = IncomingWebhook(slackWebHookUrl2)
 					webHookRsp = webHook.post(slack_msg)
 					self._logger.debug("Slack WebHook postMessage response: " + webHookRsp.text)
 
