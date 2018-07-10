@@ -175,6 +175,13 @@ var Octoslack = {
 
     toggleUseSlackIdentity : function(checkbox) {
         var checked = checkbox.checked;
+        var custom_identity_div = $("#octoslack_custom_identity_group");
+
+        custom_identity_div.attr("class", checked ? "octoslack_hidden" : "octoslack_visible");
+    },
+    
+    toggleUseSlackIdentity2 : function(checkbox) {
+        var checked = checkbox.checked;
         var custom_identity_div = $("#octoslack_custom_identity_group2");
 
         custom_identity_div.attr("class", checked ? "octoslack_hidden" : "octoslack_visible");
