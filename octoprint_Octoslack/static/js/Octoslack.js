@@ -65,8 +65,8 @@ var Octoslack = {
 	var slack_identity_check= $("#octoslack_slack_identity_check")[0];
 	this.toggleUseSlackIdentity(slack_identity_check);
 	
-	var slack_identity_check= $("#octoslack_slack_identity_checks2")[0];
-	this.toggleUseSlackIdentity2(slack_identity_check);
+	var slack_identity_check2= $("#octoslack_slack_identity_checks2")[0];
+	this.toggleUseSlackIdentity(slack_identity_check2);
 
 	var upload_method = $("#octoslack_upload_method_hidden").val();
         var upload_method_radio = $("input[name=octoslackSnapshotUploadMethod][value=" + upload_method + "]");
@@ -171,7 +171,7 @@ var Octoslack = {
         connection_method_hidden.trigger('change');
     },
 
-    toggleUseSlackIdentity2 : function(checkbox) {
+    toggleUseSlackIdentity : function(checkbox) {
         var checked = checkbox.checked;
         var custom_identity_div = $("#octoslack_custom_identity_group2");
 
